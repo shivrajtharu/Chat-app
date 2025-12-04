@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "login": "/api/auth/login",
+    "register": "/api/auth/register"
+  },
+  "user": {
+    "listAll": "/api/user/",
+    "singleUser": "/api/user/:id",
+    "update": "/api/user/update/:id",
+    "delete": "/api/user/delete/:id"
+  },
+  "stats": {
+    "totalChats": "/api/stats/chats/total",
+    "totalUsers": "/api/stats/users/total",
+    "summary": "/api/stats/summary"
+  }
+}
