@@ -1,25 +1,24 @@
 import { ChatWindow } from "../components/ChatWindow";
+import { LogoutButton } from "../components/LogoutButton";
 import { MessageInput } from "../components/MessageInput";
 import { useChat } from "../hooks/useChat";
+import Cookies from "js-cookie";
 
 export const ChatPage = ({ room }: { room: string }) => {
+  const userName = Cookies.get("userName") || "Anonymous";
   const { messages, sendMessage, sendTyping, typingUsers, totalMessages } =
-    useChat(room);
+    useChat(room, userName);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        Chat Room: {room} | Total Messages: {totalMessages}
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Chat Room: {room}</h1>
+        <LogoutButton />
+      </div>
 
-      <ChatWindow messages={messages} />
+      <h2 className="mb-4 text-gray-600">Total Messages: {totalMessages}</h2>
 
-      {typingUsers.length > 0 && (
-        <p className="text-sm text-gray-500 mb-2">
-          {typingUsers.join(", ")} {typingUsers.length > 1 ? "are" : "is"}
-          typing...
-        </p>
-      )}
+      <ChatWindow messages={messages} typingUsers={typingUsers} />
 
       <MessageInput
         onSend={(text) => {

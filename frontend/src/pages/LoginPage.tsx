@@ -29,10 +29,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
     mode: "onChange",
   });
 
@@ -40,8 +37,16 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const response = await api.post(apiEndpoints.auth.login, data);
+      const token = response.data.token;
+      const userName = response.data.user.name;
+
+      // Save token and user info in cookies
+      Cookies.set("token", token, { expires: 7 });
+      Cookies.set("userName", userName, { expires: 7 });
+
       notify("Login successful!", "success");
-      Cookies.set("token", response.data.token, { expires: 7 });
+
+      // Navigate to chat page
       navigate("/chat");
     } catch (err) {
       const apiMessage = (err as { response?: { data?: { message?: string } } })
@@ -55,7 +60,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100 px-3">
       <Paper elevation={4} sx={{ p: 4, maxWidth: 600, width: "100%" }}>
-        {/* Title */}
         <Typography
           variant="h4"
           component="h1"
@@ -64,10 +68,8 @@ export default function LoginPage() {
           Login
         </Typography>
 
-        {/* Form */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="grid grid-cols-1 gap-4">
-            {/* Email */}
             <Controller
               name="email"
               control={control}
@@ -85,7 +87,6 @@ export default function LoginPage() {
               )}
             />
 
-            {/* Password */}
             <Controller
               name="password"
               control={control}
@@ -105,7 +106,6 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             fullWidth

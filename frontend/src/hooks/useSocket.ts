@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
-
-export interface Message {
-  _id?: string;
-  sender: string;
-  room: string;
-  content: string;
-  createdAt?: string;
-  system?: boolean;
-}
+import type { Message } from "../types/chat.types";
 
 export const useChat = (room: string) => {
   const socket = useSocket();
@@ -52,7 +44,7 @@ export const useChat = (room: string) => {
       socket.off("stats:update");
       socket.off("user_joined");
     };
-  }, [room]);
+  }, [room, socket]);
 
   const sendMessage = (content: string) => {
     socket.emit("message", { room, content });

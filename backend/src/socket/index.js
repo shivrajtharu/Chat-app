@@ -26,16 +26,15 @@ export const initSocket = (server) => {
 
       const payload = verifyToken(token);
 
-      // Fetch user details
       const user = await UserModel.findById(payload.id).select("name role");
       if (!user) throw new Error("User not found");
 
-      // Store id, name, role in socket.data
       socket.data.user = {
         id: user._id.toString(),
         name: user.name,
         role: user.role,
       };
+
       next();
     } catch (err) {
       next(new Error("Unauthorized"));
@@ -79,6 +78,10 @@ export const initSocket = (server) => {
     // Typing indicator
     socket.on("typing", (room) => {
       socket.to(room).emit("typing", { name: user.name });
+    });
+
+    socket.on("typing_stop", (room) => {
+      socket.to(room).emit("typing_stop", { name: user.name });
     });
 
     socket.on("disconnect", () => {
