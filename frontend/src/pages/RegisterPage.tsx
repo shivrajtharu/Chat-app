@@ -1,6 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Person, Email, Lock } from "@mui/icons-material";
+import { Person, Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -9,6 +9,8 @@ import {
   Typography,
   CircularProgress,
   MenuItem,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import type { RegisterFormData } from "../types/register.types";
 import { registerSchema } from "../validations/registerValidation";
@@ -20,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { notify } = useToast();
   const navigate = useNavigate();
 
@@ -56,7 +59,6 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100 px-3">
       <Paper elevation={4} sx={{ p: 4, maxWidth: 600, width: "100%" }}>
-        {/* Title */}
         <Typography
           variant="h4"
           component="h1"
@@ -65,7 +67,6 @@ export default function RegisterPage() {
           Register
         </Typography>
 
-        {/* Form */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="grid grid-cols-1 gap-4">
             {/* Name */}
@@ -111,19 +112,29 @@ export default function RegisterPage() {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   label="Password*"
                   fullWidth
                   error={!!errors.password}
                   helperText={errors.password?.message}
                   InputProps={{
                     startAdornment: <Lock style={{ marginRight: 8 }} />,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
                 />
               )}
             />
 
-            {/* Role Dropdown */}
+            {/* Role */}
             <Controller
               name="role"
               control={control}
@@ -143,7 +154,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             fullWidth
