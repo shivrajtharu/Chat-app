@@ -1,2 +1,2 @@
-This is a group chat web-app
-Use on 2 devices for testing by messaging with each other
+“This group chat web app supports real-time messaging.
+To test it, open it on more than one device.”
