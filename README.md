@@ -1,2 +1,2 @@
-“This group chat web app supports real-time messaging.
+“This is a group chat web app supports real-time messaging.
 To test it, open it on more than one device.”
