@@ -48,12 +48,14 @@ export const useChat = (room: string, currentUser: string) => {
     // Typing
     socket.on("typing", (data: { name: string }) => {
       if (data.name === currentUser) return;
+
       setTypingUsers((prev) =>
         prev.includes(data.name) ? prev : [...prev, data.name]
       );
 
-      if (typingTimeouts.current[data.name])
+      if (typingTimeouts.current[data.name]) {
         clearTimeout(typingTimeouts.current[data.name]);
+      }
 
       typingTimeouts.current[data.name] = window.setTimeout(() => {
         setTypingUsers((prev) => prev.filter((u) => u !== data.name));
@@ -71,6 +73,7 @@ export const useChat = (room: string, currentUser: string) => {
       socket.off("user_joined");
       socket.off("typing");
       socket.off("stats:update");
+
       Object.values(timeouts).forEach(clearTimeout);
     };
   }, [room, socket, currentUser]);
@@ -79,8 +82,9 @@ export const useChat = (room: string, currentUser: string) => {
     socket.emit("message", { room, content });
   };
 
+  // Send typing event
   const sendTyping = () => {
-    socket.emit("typing", { room, name: currentUser });
+    socket.emit("typing", { room });
   };
 
   return { messages, sendMessage, sendTyping, typingUsers, totalMessages };

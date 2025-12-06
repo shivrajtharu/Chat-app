@@ -76,8 +76,8 @@ export const initSocket = (server) => {
     });
 
     // Typing indicator
-    socket.on("typing", (room) => {
-      socket.to(room).emit("typing", { name: user.name });
+    socket.on("typing", ({ room, name }) => {
+      socket.to(room).emit("typing", { name });
     });
 
     socket.on("typing_stop", (room) => {
