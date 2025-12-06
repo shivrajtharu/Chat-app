@@ -83,9 +83,10 @@ export const useChat = (room: string, currentUser: string) => {
   };
 
   // Send typing event
-  const sendTyping = () => {
-    socket.emit("typing", { room });
-  };
+ const sendTyping = () => {
+   socket.emit("typing", { room, name: currentUser });
+ };
+
 
   return { messages, sendMessage, sendTyping, typingUsers, totalMessages };
 };

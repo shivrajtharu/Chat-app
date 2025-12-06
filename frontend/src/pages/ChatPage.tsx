@@ -21,10 +21,8 @@ export const ChatPage = ({ room }: { room: string }) => {
       <ChatWindow messages={messages} typingUsers={typingUsers} />
 
       <MessageInput
-        onSend={(text) => {
-          sendMessage(text);
-          sendTyping();
-        }}
+        onSend={(text) => sendMessage(text)}
+        onTyping={sendTyping}
       />
     </div>
   );

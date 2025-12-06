@@ -45,13 +45,16 @@ export const initSocket = (server) => {
     const user = socket.data.user;
     console.log("User Connected:", user.name);
 
-    // Join room
+    // Join Room
     socket.on("join", (room) => {
       socket.join(room);
-      socket.to(room).emit("user_joined", { name: user.name, role: user.role });
+      socket.to(room).emit("user_joined", {
+        name: user.name,
+        role: user.role,
+      });
     });
 
-    // Send message
+    // Message Send
     socket.on("message", async ({ room, content }) => {
       try {
         const msg = await MessageModel.create({
@@ -75,11 +78,12 @@ export const initSocket = (server) => {
       }
     });
 
-    // Typing indicator
-    socket.on("typing", ({ room, name }) => {
-      socket.to(room).emit("typing", { name });
+    // Typing Frontend debounced
+    socket.on("typing", ({ room }) => {
+      socket.to(room).emit("typing", { name: user.name });
     });
 
+    //  typing stop
     socket.on("typing_stop", (room) => {
       socket.to(room).emit("typing_stop", { name: user.name });
     });
