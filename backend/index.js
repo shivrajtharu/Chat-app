@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Middlewares
 app.use(
   cors({
-    origin: "https://chat-app-frontend-ruddy-two.vercel.app",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );

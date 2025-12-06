@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useMemo } from "react";
 import SocketContext from "../context/SocketContext";
-import { createSocket } from "../utils/socket";
+import { getSocket, resetSocket } from "../utils/socketManager";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -9,9 +9,11 @@ interface Props {
 }
 
 export const SocketProvider = ({ children, token }: Props) => {
-  const [socket] = useState(() => createSocket(token));
+  const socket = useMemo(() => getSocket(token), [token]);
 
-  if (!socket) return <div>Loading chat...</div>;
+  useEffect(() => {
+    return () => resetSocket(token);
+  }, [token]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
