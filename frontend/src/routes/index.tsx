@@ -4,19 +4,41 @@ import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import { ChatPage } from "../pages/ChatPage";
 import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
 
 const room = "general";
 
 const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
-  { path: "/register", element: <RegisterPage /> },
-  { path: "/login", element: <LoginPage /> },
+  {
+    path: "/",
+    element: (
+      <PublicRoute>
+        <HomePage />
+      </PublicRoute>
+    ),
+  },
   {
     path: "/chat",
     element: (
       <PrivateRoute>
         <ChatPage room={room} />
       </PrivateRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
     ),
   },
 ]);
