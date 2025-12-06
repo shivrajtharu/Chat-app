@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://chat-app-frontend-ruddy-two.vercel.app",
     credentials: true,
   })
 );
